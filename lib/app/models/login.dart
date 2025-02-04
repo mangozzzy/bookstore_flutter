@@ -27,11 +27,11 @@ class Login extends Model {
   
   factory Login.fromJson(data) {
     return Login(
-        userId: data['userId'],
+      userId: data['userId'],
       password: data['password'],
       name: data['name'],
       email: data['email'],
-      phoneNumber: data['phone_number'],
+      phoneNumber: data['phoneNumber'],
       address: data['address'],
       birthDate: data['birthDate'],
       gender: data['gender'],

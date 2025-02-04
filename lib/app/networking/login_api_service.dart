@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/app/models/login.dart';
 import '/config/decoders.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
@@ -8,10 +9,10 @@ class LoginApiService extends NyApiService {
   @override
   String get baseUrl => getEnv('API_BASE_URL');
 
-  /// Example API Request
-  Future<dynamic> fetchData() async {
-    return await network(
-        request: (request) => request.get("/endpoint-path"),
+  Future<Login?> submit({ dynamic data }) async {
+    return await network<Login>(
+        // ---Danger! : this endpoint is NOT "/login"
+        request: (request) => request.post("/register",  data: data),
     );
   }
 }

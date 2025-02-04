@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/app/networking/login_api_service.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class LoginPage extends NyStatefulWidget {
@@ -8,13 +9,15 @@ class LoginPage extends NyStatefulWidget {
 }
 
 class _LoginPageState extends NyPage<LoginPage> {
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _userIdController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
+  final _apiService = LoginApiService();
+
   @override
   void dispose() {
-    _emailController.dispose();
+    _userIdController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
@@ -22,13 +25,18 @@ class _LoginPageState extends NyPage<LoginPage> {
   @override
   get init => () {};
 
-  void _handleLogin() async {
+  Future<void> _handleLogin() async {
+    await _apiService.submit(data: {
+      "userId": _userIdController.text,
+      "password": _passwordController.text,
+    });
+  
     if (_formKey.currentState?.validate() ?? false) {
       try {
         // 임시 로그인 성공 처리
         showToast(
           title: "환영합니다",
-          description: "${_emailController.text}님 로그인되었습니다.",
+          description: "${_userIdController.text}님 로그인되었습니다.",
         );
         
         // 프페이지로 이동 (프로필 페이지가 아닌)
@@ -59,7 +67,7 @@ class _LoginPageState extends NyPage<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 TextFormField(
-                  controller: _emailController,
+                  controller: _userIdController,
                   decoration: InputDecoration(
                     labelText: '아이디',
                     border: OutlineInputBorder(),
