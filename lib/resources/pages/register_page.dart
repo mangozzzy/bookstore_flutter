@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/app/networking/register_api_service.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class RegisterPage extends NyStatefulWidget {
@@ -8,10 +9,17 @@ class RegisterPage extends NyStatefulWidget {
 }
 
 class _RegisterPageState extends NyPage<RegisterPage> {
+  final TextEditingController _userIdController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  final TextEditingController _birthDateController = TextEditingController();
+  final TextEditingController _genderController = TextEditingController();
+  final TextEditingController _ageController = TextEditingController();
+
+  final _apiService = RegisterApiService();
   
   final _formKey = GlobalKey<FormState>();
   bool _obscurePassword = true;
@@ -19,10 +27,9 @@ class _RegisterPageState extends NyPage<RegisterPage> {
 
   @override
   void dispose() {
-    _nameController.dispose();
+    _userIdController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -42,9 +49,9 @@ class _RegisterPageState extends NyPage<RegisterPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 TextFormField(
-                  controller: _nameController,
+                  controller: _userIdController,
                   decoration: InputDecoration(
-                    labelText: '이름',
+                    labelText: 'id',
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.person),
                   ),
@@ -55,26 +62,6 @@ class _RegisterPageState extends NyPage<RegisterPage> {
                     return null;
                   },
                 ),
-                SizedBox(height: 16),
-                TextFormField(
-                  controller: _emailController,
-                  decoration: InputDecoration(
-                    labelText: '이메일',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.email),
-                  ),
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
-                    if (value?.isEmpty ?? true) {
-                      return '이메일을 입력해주세요';
-                    }
-                    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value!)) {
-                      return '올바른 이메일 형식이 아닙니다';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 16),
                 TextFormField(
                   controller: _passwordController,
                   decoration: InputDecoration(
@@ -97,30 +84,69 @@ class _RegisterPageState extends NyPage<RegisterPage> {
                     return null;
                   },
                 ),
-                SizedBox(height: 16),
                 TextFormField(
-                  controller: _confirmPasswordController,
+                  controller: _nameController,
                   decoration: InputDecoration(
-                    labelText: '비밀번호 확인',
+                    labelText: 'name',
                     border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.lock_outline),
-                    suffixIcon: IconButton(
-                      icon: Icon(_obscureConfirmPassword ? Icons.visibility_off : Icons.visibility),
-                      onPressed: () => setState(() => _obscureConfirmPassword = !_obscureConfirmPassword),
-                    ),
+                    prefixIcon: Icon(Icons.person),
                   ),
-                  obscureText: _obscureConfirmPassword,
                   validator: (value) {
                     if (value?.isEmpty ?? true) {
-                      return '비밀번호를 다시 입력해주세요';
-                    }
-                    if (value != _passwordController.text) {
-                      return '비밀번호가 일치하지 않습니다';
+                      return '이름을 입력해주세요';
                     }
                     return null;
                   },
                 ),
-                SizedBox(height: 24),
+                TextFormField(
+                  controller: _emailController,
+                  decoration: InputDecoration(
+                    labelText: '이메일',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.email),
+                  ),
+                ),
+                TextFormField(
+                  controller: _phoneNumberController,
+                  decoration: InputDecoration(
+                    labelText: 'phoneNumber',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.phone),
+                  ),
+                ),
+                TextFormField(
+                  controller: _addressController,
+                  decoration: InputDecoration(
+                    labelText: 'address',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.home),
+                  ),
+                ),
+                TextFormField(
+                  controller: _birthDateController,
+                  decoration: InputDecoration(
+                    labelText: 'birthDate',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.cake),
+                  ),
+                ),
+                TextFormField(
+                  controller: _genderController,
+                  decoration: InputDecoration(
+                    labelText: 'gender',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.person),
+                  ),
+                ),
+                TextFormField(
+                  controller: _ageController,
+                  decoration: InputDecoration(
+                    labelText: 'age',
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.numbers),
+                  ),
+                ),
+                
                 ElevatedButton(
                   onPressed: _handleRegister,
                   child: Padding(
@@ -131,7 +157,6 @@ class _RegisterPageState extends NyPage<RegisterPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -143,14 +168,26 @@ class _RegisterPageState extends NyPage<RegisterPage> {
                   ],
                 ),
               ],
-            ),
+            ).withGap(10),
           ),
         ),
       ),
     );
   }
 
-  void _handleRegister() {
+  Future<void> _handleRegister() async {
+    await _apiService.submit(data: { 
+      "userId": _userIdController.text,
+      "password": _passwordController.text,
+      "name": _nameController.text,
+      "email": _emailController.text,
+      "phoneNumber": _phoneNumberController.text,
+      "address": _addressController.text,
+      "birthDate": _birthDateController.text,
+      "gender": _genderController.text,
+      "age": _ageController.text
+    });
+
     if (_formKey.currentState?.validate() ?? false) {
       // 회원가입 로직 구현
       showToast(

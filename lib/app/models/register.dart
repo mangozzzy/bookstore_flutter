@@ -9,7 +9,7 @@ class Register extends Model {
   final String? address;
   final String? birthDate;
   final String? gender;
-  final int? age;
+  final String? age;
 
   static StorageKey key = "register";
   

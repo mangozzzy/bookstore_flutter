@@ -1,3 +1,4 @@
+import '/app/networking/register_api_service.dart';
 import '/app/models/register.dart';
 import '/app/models/login.dart';
 import '/app/networking/login_api_service.dart';
@@ -46,6 +47,8 @@ final Map<Type, dynamic> apiDecoders = {
   // ...
 
   LoginApiService: LoginApiService(),
+
+  RegisterApiService: RegisterApiService(),
 };
 
 /* Controller Decoders
