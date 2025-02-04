@@ -1,3 +1,4 @@
+import '/app/models/register.dart';
 import '/app/models/login.dart';
 import '/app/networking/login_api_service.dart';
 import '/app/controllers/home_controller.dart';
@@ -25,6 +26,10 @@ final Map<Type, dynamic> modelDecoders = {
   List<Login>: (data) => List.from(data).map((json) => Login.fromJson(json)).toList(),
 
   Login: (data) => Login.fromJson(data),
+
+  List<Register>: (data) => List.from(data).map((json) => Register.fromJson(json)).toList(),
+
+  Register: (data) => Register.fromJson(data),
 };
 
 /* API Decoders
