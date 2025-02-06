@@ -1,3 +1,5 @@
+import '/app/models/profile.dart';
+import '/app/networking/profile_api_service.dart';
 import '/app/networking/register_api_service.dart';
 import '/app/models/register.dart';
 import '/app/models/login.dart';
@@ -31,6 +33,10 @@ final Map<Type, dynamic> modelDecoders = {
   List<Register>: (data) => List.from(data).map((json) => Register.fromJson(json)).toList(),
 
   Register: (data) => Register.fromJson(data),
+
+  List<Profile>: (data) => List.from(data).map((json) => Profile.fromJson(json)).toList(),
+
+  Profile: (data) => Profile.fromJson(data),
 };
 
 /* API Decoders
@@ -49,6 +55,8 @@ final Map<Type, dynamic> apiDecoders = {
   LoginApiService: LoginApiService(),
 
   RegisterApiService: RegisterApiService(),
+
+  ProfileApiService: ProfileApiService(),
 };
 
 /* Controller Decoders

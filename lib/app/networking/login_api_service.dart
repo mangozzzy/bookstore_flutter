@@ -12,7 +12,7 @@ class LoginApiService extends NyApiService {
   Future<Login?> submit({ dynamic data }) async {
     return await network<Login>(
         // ---Danger! : this endpoint is NOT "/login"
-        request: (request) => request.post("/register",  data: data),
+        request: (request) => request.post("/api/register",  data: data),
     );
   }
 }

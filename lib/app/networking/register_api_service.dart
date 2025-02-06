@@ -11,7 +11,7 @@ class RegisterApiService extends NyApiService {
 
   Future<Register?> submit({ dynamic data }) async {
     return await network<Register>(
-        request: (request) => request.post("/register", data: data),
+        request: (request) => request.post("/api/register", data: data),
     );
   }
 }

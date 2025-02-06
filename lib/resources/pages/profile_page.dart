@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/app/models/profile.dart';
+import 'package:flutter_app/app/networking/profile_api_service.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class ProfilePage extends NyStatefulWidget {
@@ -17,6 +19,10 @@ class _ProfilePageState extends NyPage<ProfilePage> {
   String _selectedGender = '남성';
   final List<String> _selectedInterests = [];
   final List<String> _availableInterests = ['과학', '소설', '인문', '에세이', '역사', '예술', '경제'];
+
+  final _apiService = ProfileApiService();
+  
+  late Profile? _profile;
   
   @override
   void dispose() {
@@ -29,13 +35,14 @@ class _ProfilePageState extends NyPage<ProfilePage> {
   }
 
   @override
-  get init => () {
+  get init => () async {
+    _profile = await _apiService.getProfile();
     // 초기 데이터 설정
-    _nameController.text = "홍길동";
-    _emailController.text = "hong@example.com";
-    _phoneController.text = "010-1234-5678";
-    _birthController.text = "1990-01-01";
-    _addressController.text = "서울시 강남구";
+    _nameController.text = _profile?.name ?? "";
+    _emailController.text = _profile?.email ?? "";
+    _phoneController.text = _profile?.phoneNumber ?? "";
+    _birthController.text = _profile?.birthDate ?? "";
+    _addressController.text = _profile?.address ?? "";
     _selectedInterests.addAll(['과학', '소설']); // 초기 관심사
   };
 
