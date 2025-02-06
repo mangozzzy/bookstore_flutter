@@ -20,7 +20,9 @@ class _RegisterPageState extends NyPage<RegisterPage> {
   final TextEditingController _ageController = TextEditingController();
 
   final _apiService = RegisterApiService();
-  
+ 
+  String _selectedGender = "M"; 
+
   final _formKey = GlobalKey<FormState>();
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
@@ -130,13 +132,22 @@ class _RegisterPageState extends NyPage<RegisterPage> {
                     prefixIcon: Icon(Icons.cake),
                   ),
                 ),
-                TextFormField(
-                  controller: _genderController,
-                  decoration: InputDecoration(
-                    labelText: 'gender',
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.person),
-                  ),
+                Row(
+                  children: [
+                    Text("성별: "),
+                    Radio(
+                      value: 'M',
+                      groupValue: _selectedGender,
+                      onChanged: (value) => setState(() => _selectedGender = value!),
+                    ),
+                    Text('남성'),
+                    Radio(
+                      value: 'F',
+                      groupValue: _selectedGender,
+                      onChanged: (value) => setState(() => _selectedGender = value!),
+                    ),
+                    Text('여성'),
+                  ],
                 ),
                 TextFormField(
                   controller: _ageController,
@@ -184,7 +195,7 @@ class _RegisterPageState extends NyPage<RegisterPage> {
       "phoneNumber": _phoneNumberController.text,
       "address": _addressController.text,
       "birthDate": _birthDateController.text,
-      "gender": _genderController.text,
+      "gender": _selectedGender,
       "age": _ageController.text
     });
 
