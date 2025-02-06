@@ -10,8 +10,9 @@ class ProfileApiService extends NyApiService {
   String get baseUrl => getEnv('API_BASE_URL');
 
   Future<Profile?> getProfile() async {
+    final userId = await storageRead("userId");
     return await network<Profile>(
-        request: (request) => request.get("/member/MyPage/higakijin2/orders"),
+        request: (request) => request.get("/member/MyPage/${userId}/orders"),
     );
   }
 }

@@ -42,6 +42,7 @@ class _LoginPageState extends NyPage<LoginPage> {
         
         // 프페이지로 이동 (프로필 페이지가 아닌)
         Navigator.pushReplacementNamed(context, '/home');
+        await storageSave("userId", res?.userId);
       } catch (e) {
         showToast(
           title: "오류",
