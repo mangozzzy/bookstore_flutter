@@ -26,12 +26,13 @@ class _LoginPageState extends NyPage<LoginPage> {
   get init => () {};
 
   Future<void> _handleLogin() async {
-    await _apiService.submit(data: {
+    final res =  await _apiService.submit(data: {
       "userId": _userIdController.text,
       "password": _passwordController.text,
     });
+
   
-    if (_formKey.currentState?.validate() ?? false) {
+    if ((_formKey.currentState?.validate() ?? false) && (res?.success ?? false)) {
       try {
         // 임시 로그인 성공 처리
         showToast(
