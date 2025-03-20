@@ -119,7 +119,7 @@ class _BookDetailPageState extends NyPage<BookDetailPage> {
           Gap(10),
           NyTextField(
             controller: _commentController,
-            decoration: InputDecoration(hintText: "Input your review"),
+            decoration: InputDecoration(hintText: " 댓글을 달아주세요"),
             validationRules: "not_empty",
           ),
           ElevatedButton(
@@ -130,13 +130,13 @@ class _BookDetailPageState extends NyPage<BookDetailPage> {
               );
               reboot();
             },
-            child: Text("Comment"),
+            child: Text("댓글 달기"),
           ),
           ElevatedButton(
             onPressed: () async {
               await _cartApiService.add(bookId: _book!.bookId, quantity: 1);
             },
-            child: Text("Add to Cart"),
+            child: Text("장바구니 담기"),
           ),
           ElevatedButton(
             onPressed: () async {
@@ -149,7 +149,7 @@ class _BookDetailPageState extends NyPage<BookDetailPage> {
                 "orderId": order?.id.toString(),
               });
             },
-            child: Text("Purchase"),
+            child: Text("구매하기"),
           ),
           Gap(20),
         ],

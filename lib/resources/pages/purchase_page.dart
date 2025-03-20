@@ -15,7 +15,7 @@ class _PurchasePageState extends NyState<PurchasePage> {
   final List<String> _availableCoupons = ['신규 가입 10% 할인', '도서 특별 20% 할인'];
   
   final _paymentApiService = PaymentApiService();
-  final _addressController = TextEditingController();
+  final _addressController = TextEditingController(text: "서울시 성북구");
   final _formKey = GlobalKey<FormState>();
 
   @override
