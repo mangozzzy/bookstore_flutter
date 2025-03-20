@@ -40,13 +40,13 @@ class _BooksState extends NyState<Books> {
       _filteredBooks?.sort((a, b) {
         int comparison;
         switch (criteria) {
-          case '책 제목':
+          case 'title':
             comparison = a.title!.compareTo(b.title!);
             break;
-          case '작가명':
+          case 'author':
             comparison = a.author!.compareTo(b.author!);
             break;
-          case '리뷰 많은 순':
+          case 'commentCount':
             comparison = (a.commentCount ?? 0).compareTo(b.commentCount ?? 0);
             break;
           default:
@@ -73,9 +73,9 @@ class _BooksState extends NyState<Books> {
           DropdownButton<String>(
             value: _sortCriteria,
             items: [
-              DropdownMenuItem(value: 'title', child: Text('Title')),
-              DropdownMenuItem(value: 'author', child: Text('Author')),
-              DropdownMenuItem(value: 'commentCount', child: Text('Comments')),
+              DropdownMenuItem(value: 'title', child: Text('책 제목')),
+              DropdownMenuItem(value: 'author', child: Text('작가명')),
+              DropdownMenuItem(value: 'commentCount', child: Text('리뷰 많은 순')),
             ],
             onChanged: (value) {
               if (value != null) {
