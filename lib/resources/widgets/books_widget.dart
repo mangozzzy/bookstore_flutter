@@ -40,13 +40,13 @@ class _BooksState extends NyState<Books> {
       _filteredBooks?.sort((a, b) {
         int comparison;
         switch (criteria) {
-          case 'title':
+          case '책 제목':
             comparison = a.title!.compareTo(b.title!);
             break;
-          case 'author':
+          case '작가명':
             comparison = a.author!.compareTo(b.author!);
             break;
-          case 'commentCount':
+          case '리뷰 많은 순':
             comparison = (a.commentCount ?? 0).compareTo(b.commentCount ?? 0);
             break;
           default:
@@ -64,7 +64,7 @@ class _BooksState extends NyState<Books> {
         title: TextField(
           onChanged: _filterBooks,
           decoration: InputDecoration(
-            hintText: 'Search...',
+            hintText: '검색어를 입력하세요',
             border: InputBorder.none,
           ),
         ),

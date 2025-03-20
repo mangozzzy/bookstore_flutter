@@ -4,16 +4,16 @@ import 'package:nylo_framework/nylo_framework.dart';
 
 class PurchasePage extends NyStatefulWidget {
   static RouteView path = ("/purchase", (_) => PurchasePage());
-  
+
   PurchasePage({super.key}) : super(child: () => _PurchasePageState());
 }
 
 class _PurchasePageState extends NyState<PurchasePage> {
   String _selectedPayment = '카드';
-  final List<String> _paymentMethods = ['카드', '계좌이체'];
+  final List<String> _paymentMethods = ['신한', '농협', '삼성'];
   String? _selectedCoupon;
   final List<String> _availableCoupons = ['신규 가입 10% 할인', '도서 특별 20% 할인'];
-  
+
   final _paymentApiService = PaymentApiService();
   final _addressController = TextEditingController(text: "서울시 성북구");
   final _formKey = GlobalKey<FormState>();
@@ -58,7 +58,8 @@ class _PurchasePageState extends NyState<PurchasePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('결제 수단', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        Text('결제 카드 선택',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         SizedBox(height: 16),
         ...List.generate(_paymentMethods.length, (index) {
           return RadioListTile<String>(
@@ -70,6 +71,19 @@ class _PurchasePageState extends NyState<PurchasePage> {
             },
           );
         }),
+        TextFormField(
+          //controller: _addressController,
+          decoration: InputDecoration(
+            labelText: '카드번호 입력',
+            border: OutlineInputBorder(),
+            suffixIcon: IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                // 주소 검색 기능
+              },
+            ),
+          ),
+        ),
       ],
     );
   }
@@ -78,7 +92,8 @@ class _PurchasePageState extends NyState<PurchasePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('쿠폰 적용', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        Text('쿠폰 적용',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         SizedBox(height: 16),
         DropdownButtonFormField<String>(
           decoration: InputDecoration(
@@ -104,7 +119,8 @@ class _PurchasePageState extends NyState<PurchasePage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('배송 정보', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        Text('배송 정보',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         SizedBox(height: 16),
         TextFormField(
           controller: _addressController,
@@ -136,8 +152,11 @@ class _PurchasePageState extends NyState<PurchasePage> {
 
   Widget _buildOrderSummary() {
     final originalPrice = 30000;
-    final discountAmount = _selectedCoupon != null ? 
-        (_selectedCoupon!.contains('20%') ? originalPrice * 0.2 : originalPrice * 0.1) : 0;
+    final discountAmount = _selectedCoupon != null
+        ? (_selectedCoupon!.contains('20%')
+            ? originalPrice * 0.2
+            : originalPrice * 0.1)
+        : 0;
     final finalPrice = originalPrice - discountAmount;
 
     return Card(
@@ -146,7 +165,8 @@ class _PurchasePageState extends NyState<PurchasePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('주문 내역', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Text('주문 내역',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -193,7 +213,8 @@ class _PurchasePageState extends NyState<PurchasePage> {
   }
 
   Future<void> _handlePurchase() async {
-    await _paymentApiService.payProcess(orderId: int.parse(queryParameters()['orderId']), method: "카드");
+    await _paymentApiService.payProcess(
+        orderId: int.parse(queryParameters()['orderId']), method: "카드");
 
     if (_formKey.currentState?.validate() ?? false) {
       showDialog(
@@ -222,4 +243,4 @@ class _PurchasePageState extends NyState<PurchasePage> {
       );
     }
   }
-} 
+}
