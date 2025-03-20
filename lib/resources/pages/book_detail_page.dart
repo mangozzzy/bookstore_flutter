@@ -128,6 +128,7 @@ class _BookDetailPageState extends NyPage<BookDetailPage> {
                 bookId: _book!.bookId,
                 content: _commentController.text,
               );
+              reboot();
             },
             child: Text("Comment"),
           ),
