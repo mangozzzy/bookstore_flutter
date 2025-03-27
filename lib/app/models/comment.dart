@@ -6,6 +6,7 @@ class Comment extends Model {
   final String content;
   final Book? book;
   final User? user;
+  final int commentId;
 
   static StorageKey key = "comment";
   
@@ -13,13 +14,15 @@ class Comment extends Model {
     required this.content,
     required this.book,
     required this.user,
+    required this.commentId,
   }) : super(key: key);
   
   factory Comment.fromJson(data) {
     return Comment(
       content: data['content'],
       book: Book.fromJson(data['book']),
-      user: User.fromJson(data['user'])
+      user: User.fromJson(data['user']),
+      commentId: data['commentId'],
     );
   }
 
