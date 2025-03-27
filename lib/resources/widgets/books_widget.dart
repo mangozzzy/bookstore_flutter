@@ -151,7 +151,7 @@ class _BooksState extends NyState<Books> {
                       children: [
                         Expanded(
                           child: Image.network(
-                            "http://localhost:8080${book.imageUrl}",
+                            "${getEnv("API_BASE_URL")}${book.imageUrl}",
                             fit: BoxFit.cover,
                             width: double.infinity,
                           ),
