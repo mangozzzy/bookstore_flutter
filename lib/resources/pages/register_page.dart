@@ -53,7 +53,7 @@ class _RegisterPageState extends NyPage<RegisterPage> {
                 TextFormField(
                   controller: _userIdController,
                   decoration: InputDecoration(
-                    labelText: 'id',
+                    labelText: '아이디',
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.person),
                   ),
@@ -89,7 +89,7 @@ class _RegisterPageState extends NyPage<RegisterPage> {
                 TextFormField(
                   controller: _nameController,
                   decoration: InputDecoration(
-                    labelText: 'name',
+                    labelText: '이름',
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.person),
                   ),
@@ -111,7 +111,7 @@ class _RegisterPageState extends NyPage<RegisterPage> {
                 TextFormField(
                   controller: _phoneNumberController,
                   decoration: InputDecoration(
-                    labelText: 'phoneNumber',
+                    labelText: '전화번호',
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.phone),
                   ),
@@ -119,7 +119,7 @@ class _RegisterPageState extends NyPage<RegisterPage> {
                 TextFormField(
                   controller: _addressController,
                   decoration: InputDecoration(
-                    labelText: 'address',
+                    labelText: '주소',
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.home),
                   ),
@@ -127,7 +127,7 @@ class _RegisterPageState extends NyPage<RegisterPage> {
                 TextFormField(
                   controller: _birthDateController,
                   decoration: InputDecoration(
-                    labelText: 'birthDate',
+                    labelText: '생년월일',
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.cake),
                   ),
@@ -152,7 +152,7 @@ class _RegisterPageState extends NyPage<RegisterPage> {
                 TextFormField(
                   controller: _ageController,
                   decoration: InputDecoration(
-                    labelText: 'age',
+                    labelText: '나이',
                     border: OutlineInputBorder(),
                     prefixIcon: Icon(Icons.numbers),
                   ),
