@@ -36,4 +36,13 @@ class CommentApiService extends NyApiService {
       request: (request) => request.get("/api/comments/book/${bookId}"),
     );
   }
+
+  Future<Comment?> deleteComment({
+    required int commentId,
+  }) async {
+    final _profile = await _profileApiService.getProfile();
+    return await network(
+      request: (request) => request.delete("/api/comments/${commentId}?userId=${_profile?.id}"),
+    );
+  }
 }

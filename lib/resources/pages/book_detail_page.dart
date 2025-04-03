@@ -53,9 +53,19 @@ class _BookDetailPageState extends NyPage<BookDetailPage> {
                 itemCount: _comments?.length ?? 0,
                 itemBuilder: (BuildContext context, int index) {
                   final item = _comments![index];
+
                   return ListTile(
                     title: Text(item.content ?? 'No content'),
                     subtitle: Text("${item.user?.name ?? ""}"),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () async {
+                        await _commentApiService.deleteComment(
+                          commentId: item.commentId ?? 0,
+                        );
+                        reboot();
+                      },
+                    ),
                   );
                 },
               ),
@@ -128,6 +138,8 @@ class _BookDetailPageState extends NyPage<BookDetailPage> {
                 bookId: _book!.bookId,
                 content: _commentController.text,
               );
+              _commentController.text = "";
+
               reboot();
             },
             child: Text("댓글 달기"),
