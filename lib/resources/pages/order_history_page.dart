@@ -94,7 +94,7 @@ class _OrderHistoryPageState extends NyState<OrderHistoryPage> {
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Text(
-                                "",
+                                _getStatusText("주문완료"),
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
