@@ -88,7 +88,11 @@ class _CartPageState extends NyPage<CartPage> {
                     ),
                     SizedBox(height: 16),
                     ElevatedButton(
-                      onPressed: _handleCheckout,
+                      onPressed: () {
+                        routeTo('/purchase', queryParameters: {
+                          "orderId": "1",
+                        });
+                      },
                       style: ElevatedButton.styleFrom(
                         minimumSize: Size(double.infinity, 50),
                       ),
