@@ -1,3 +1,4 @@
+import '/app/networking/rating_api_service.dart';
 import '/app/models/payment.dart';
 import '/app/networking/payment_api_service.dart';
 import '/app/models/order_delivery.dart';
@@ -133,6 +134,8 @@ final Map<Type, dynamic> apiDecoders = {
   OrdersApiService: OrdersApiService(),
 
   PaymentApiService: PaymentApiService(),
+
+  RatingApiService: RatingApiService(),
 };
 
 /* Controller Decoders
