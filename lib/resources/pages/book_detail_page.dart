@@ -6,6 +6,7 @@ import 'package:flutter_app/app/networking/books_api_service.dart';
 import 'package:flutter_app/app/networking/cart_api_service.dart';
 import 'package:flutter_app/app/networking/comment_api_service.dart';
 import 'package:flutter_app/app/networking/orders_api_service.dart';
+import 'package:flutter_app/app/networking/rating_api_service.dart';
 import 'package:gap/gap.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
@@ -19,6 +20,7 @@ class _BookDetailPageState extends NyPage<BookDetailPage> {
   final _booksApiService = BooksApiService();
   final _cartApiService = CartApiService();
   final _ordersApiService = OrdersApiService();
+  final _ratingApiService = RatingApiService();
 
   final _commentController = TextEditingController();
   final _booksController = BooksController();
@@ -26,6 +28,7 @@ class _BookDetailPageState extends NyPage<BookDetailPage> {
 
   late Book? _book;
   late List<Comment>? _comments;
+  int _selectedRating = 0;
 
   @override
   get init => () async {
@@ -143,6 +146,32 @@ class _BookDetailPageState extends NyPage<BookDetailPage> {
               reboot();
             },
             child: Text("댓글 달기"),
+          ),
+          SizedBox(height: 16),
+          Text(
+            '별점 평가',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 8),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: List.generate(5, (index) {
+              return GestureDetector(
+                onTap: () async {
+                  _selectedRating = index + 1;
+                  await _ratingApiService.create(
+                    bookId: _book!.bookId,
+                    score: _selectedRating,
+                  );
+                  reboot();
+                },
+                child: Icon(
+                  index < _selectedRating ? Icons.star : Icons.star_border,
+                  color: Colors.amber,
+                  size: 40,
+                ),
+              );
+            }),
           ),
           ElevatedButton(
             onPressed: () async {
