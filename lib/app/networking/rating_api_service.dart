@@ -10,6 +10,14 @@ class RatingApiService extends NyApiService {
   @override
   String get baseUrl => getEnv('API_BASE_URL');
 
+  Future<double> getAverage({
+    required int bookId,
+   }) async {
+    return await network(
+      request: (requeset) => requeset.get("/ratings/average?bookId=${bookId}}"),
+    );
+   }
+
   Future<dynamic> create({
     required int bookId,
     required int score
