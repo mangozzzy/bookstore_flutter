@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/models/book.dart';
 import 'package:flutter_app/app/networking/books_api_service.dart';
+import 'package:flutter_app/app/networking/rating_api_service.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class Books extends StatefulWidget {
@@ -12,6 +13,7 @@ class Books extends StatefulWidget {
 
 class _BooksState extends NyState<Books> {
   final _booksApiService = BooksApiService();
+  final _ratingApiService = RatingApiService();
   late List<Book>? _books;
   late List<Book>? _filteredBooks;
   String _searchQuery = '';
@@ -141,57 +143,64 @@ class _BooksState extends NyState<Books> {
               itemCount: _filteredBooks?.length ?? 0,
               itemBuilder: (context, index) {
                 final book = _filteredBooks![index];
-                return GestureDetector(
-                  onTap: () {
-                    routeTo("/book-detail", queryParameters: {"id": book.bookId.toString()});
+                return FutureBuilder<double>(
+                  future: _ratingApiService.getAverage(bookId: book.bookId),
+                  builder: (context, snapshot) {
+                    final review = snapshot.data ?? 0;
+                    return GestureDetector(
+                      onTap: () {
+                        routeTo("/book-detail", queryParameters: {"id": book.bookId.toString()});
+                      },
+                      child: Card(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Image.network(
+                                "${getEnv("API_BASE_URL")}${book.imageUrl}",
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    book.title ?? "",
+                                    style: TextStyle(fontWeight: FontWeight.bold),
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  Text(
+                                    book.author ?? "",
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                  Text(
+                                    '₩${book.price}',
+                                    style: TextStyle(color: Colors.blue),
+                                  ),
+                                  Text("comment: ${book.commentCount}"),
+                                  Text("Review: ${review}"),
+                                  SizedBox(height: 4),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      showToast(
+                                        title: "성공",
+                                        description: "장바구니에 추가되었습니다.",
+                                      );
+                                    },
+                                    child: Text('장바구니 담기'),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
                   },
-                  child: Card(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Image.network(
-                            "${getEnv("API_BASE_URL")}${book.imageUrl}",
-                            fit: BoxFit.cover,
-                            width: double.infinity,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                book.title ?? "",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              Text(
-                                book.author ?? "",
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                              Text(
-                                '₩${book.price}',
-                                style: TextStyle(color: Colors.blue),
-                              ),
-                              Text("comment: ${book.commentCount}"),
-                              SizedBox(height: 4),
-                              ElevatedButton(
-                                onPressed: () {
-                                  showToast(
-                                    title: "성공",
-                                    description: "장바구니에 추가되었습니다.",
-                                  );
-                                },
-                                child: Text('장바구니 담기'),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                 );
               },
             ),

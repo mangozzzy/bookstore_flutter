@@ -14,7 +14,7 @@ class RatingApiService extends NyApiService {
     required int bookId,
    }) async {
     return await network(
-      request: (requeset) => requeset.get("/ratings/average?bookId=${bookId}}"),
+      request: (requeset) => requeset.get("/ratings/average?bookId=$bookId"),
     );
    }
 
