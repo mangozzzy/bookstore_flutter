@@ -11,6 +11,7 @@ class Book extends Model {
   final int? commentCount;
   final String? createdAt;
   final String? updatedAt;
+  double? averageRating;
 
   static StorageKey key = "book";
   
@@ -25,6 +26,7 @@ class Book extends Model {
     this.commentCount,
     this.createdAt,
     this.updatedAt,
+    this.averageRating,
   }) : super(key: key);
   
   factory Book.fromJson(dynamic data) {
@@ -39,6 +41,7 @@ class Book extends Model {
       commentCount: data['commentCount'],
       createdAt: data['createdAt'],
       updatedAt: data['updatedAt'],
+      averageRating: data['averageRating'],
     );   
   }
 

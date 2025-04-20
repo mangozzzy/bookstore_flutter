@@ -51,6 +51,9 @@ class _BooksState extends NyState<Books> {
           case 'commentCount':
             comparison = (a.commentCount ?? 0).compareTo(b.commentCount ?? 0);
             break;
+          case 'review':
+            comparison = (a.averageRating ?? 0).compareTo(b.averageRating ?? 0);
+            break;
           default:
             comparison = 0;
         }
@@ -78,6 +81,7 @@ class _BooksState extends NyState<Books> {
               DropdownMenuItem(value: 'title', child: Text('책 제목')),
               DropdownMenuItem(value: 'author', child: Text('작가명')),
               DropdownMenuItem(value: 'commentCount', child: Text('리뷰 많은 순')),
+              DropdownMenuItem(value: 'review', child: Text('평점 높은 순')),
             ],
             onChanged: (value) {
               if (value != null) {
