@@ -29,7 +29,7 @@ class _BooksState extends NyState<Books> {
   bool _isAscending = true; // 並び替えの方向を管理
 
   @override
-  void initState() async {
+  void initState() {
     super.initState();
     _searchFocusNode.addListener(() {
       setState(() {
@@ -37,7 +37,6 @@ class _BooksState extends NyState<Books> {
       });
     });
 
-    _searchHistories = await _searchHistoryApiService.findAll();
   }
 
   @override
@@ -50,6 +49,7 @@ class _BooksState extends NyState<Books> {
   get init => () async {
     _books = await _booksApiService.findAll();
     _filteredBooks = _books;
+    _searchHistories = await _searchHistoryApiService.findAll();
   };
 
   void _filterBooks(String query) {
@@ -165,13 +165,7 @@ class _BooksState extends NyState<Books> {
           if (_isSearchFocused)
             Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'hello',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              child: ListView(lengt),
             ),
           Expanded(
             child: GridView.builder(
