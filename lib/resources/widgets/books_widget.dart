@@ -180,6 +180,15 @@ class _BooksState extends NyState<Books> {
                     final history = _searchHistories![index];
                     return ListTile(
                       title: Text(history.keyword ?? ''),
+                      trailing: IconButton(
+                        icon: Icon(Icons.delete, color: Colors.grey),
+                        onPressed: () async {
+                          await _searchHistoryApiService.destroy(keyword: history.keyword ?? '');
+                          setState(() {
+                            _searchHistories = _searchHistories?.where((h) => h.keyword != history.keyword).toList();
+                          });
+                        },
+                      ),
                       onTap: () {
                         _searchController.text = history.keyword ?? "";
                         _filterBooks(history.keyword ?? '');

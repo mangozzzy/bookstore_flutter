@@ -37,7 +37,7 @@ class SearchHistoryApiService extends NyApiService {
   Future<dynamic> destroy({required String keyword }) async {
     final _profile = await _profileApiService.getProfile();
     return await network(
-      request: (request) => request.delete("/api/search-history/${_profile!.id}/$keyword")
+      request: (request) => request.delete("/api/search-history/${_profile!.id}/keyword?keyword=$keyword")
      );
   }
 }
