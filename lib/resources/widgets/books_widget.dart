@@ -97,7 +97,16 @@ class _BooksState extends NyState<Books> {
         title: TextField(
           controller: _searchController,
           focusNode: _searchFocusNode,
-          onChanged: _filterBooks,
+          onSubmitted: (value) {
+            _filterBooks(value);
+            if (value.isNotEmpty) {
+              _searchHistoryApiService.create(keyword: value);
+              setState(() {
+                _searchHistories?.add(SearchHistory(keyword: value));
+              });
+            }
+            _searchFocusNode.unfocus();
+          },
           decoration: InputDecoration(
             hintText: '검색어를 입력하세요',
             border: InputBorder.none,
