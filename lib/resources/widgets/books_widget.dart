@@ -163,105 +163,112 @@ class _BooksState extends NyState<Books> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          if (_isSearchFocused)
-            Container(
-              height: 200,
-              child: ListView.builder(
-                itemCount: _searchHistories?.length ?? 0,
+      body: GestureDetector(
+        onTap: () {
+          if (_searchFocusNode.hasFocus) {
+            _searchFocusNode.unfocus();
+          }
+        },
+        child: Column(
+          children: [
+            if (_isSearchFocused)
+              Container(
+                height: 200,
+                child: ListView.builder(
+                  itemCount: _searchHistories?.length ?? 0,
+                  itemBuilder: (context, index) {
+                    final history = _searchHistories![index];
+                    return ListTile(
+                      title: Text(history.keyword ?? ''),
+                      onTap: () {
+                        _searchController.text = history.keyword ?? "";
+                        _filterBooks(history.keyword ?? '');
+                        setState(() {
+                          _searchQuery = history.keyword ?? "";
+                          _isSearchFocused = false;
+                        });
+                      },
+                    );
+                  },
+                ),
+              ),
+
+            Expanded(
+              child: GridView.builder(
+                padding: EdgeInsets.all(16),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 0.7,
+                  crossAxisSpacing: 16,
+                  mainAxisSpacing: 16,
+                ),
+                itemCount: _filteredBooks?.length ?? 0,
                 itemBuilder: (context, index) {
-                  final history = _searchHistories![index];
-                  return ListTile(
-                    title: Text(history.keyword ?? ''),
-                    onTap: () {
-                      _searchController.text = history.keyword ?? "";
-                      _filterBooks(history.keyword ?? '');
-                      setState(() {
-                        _searchQuery = history.keyword ?? "";
-                        _isSearchFocused = false;
-                      });
+                  final book = _filteredBooks![index];
+                  return FutureBuilder<double>(
+                    future: _ratingApiService.getAverage(bookId: book.bookId),
+                    builder: (context, snapshot) {
+                      final review = snapshot.data ?? 0;
+                      return GestureDetector(
+                        onTap: () {
+                          routeTo("/book-detail", queryParameters: {"id": book.bookId.toString()});
+                        },
+                        child: Card(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: Image.network(
+                                  "${getEnv("API_BASE_URL")}${book.imageUrl}",
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      book.title ?? "",
+                                      style: TextStyle(fontWeight: FontWeight.bold),
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    Text(
+                                      book.author ?? "",
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
+                                    Text(
+                                      '₩${book.price}',
+                                      style: TextStyle(color: Colors.blue),
+                                    ),
+                                    Text("comment: ${book.commentCount}"),
+                                    Text("Review: ${review}"),
+                                    SizedBox(height: 4),
+                                    ElevatedButton(
+                                      onPressed: () {
+                                        showToast(
+                                          title: "성공",
+                                          description: "장바구니에 추가되었습니다.",
+                                        );
+                                      },
+                                      child: Text('장바구니 담기'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
                     },
                   );
                 },
               ),
             ),
-
-          Expanded(
-            child: GridView.builder(
-              padding: EdgeInsets.all(16),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.7,
-                crossAxisSpacing: 16,
-                mainAxisSpacing: 16,
-              ),
-              itemCount: _filteredBooks?.length ?? 0,
-              itemBuilder: (context, index) {
-                final book = _filteredBooks![index];
-                return FutureBuilder<double>(
-                  future: _ratingApiService.getAverage(bookId: book.bookId),
-                  builder: (context, snapshot) {
-                    final review = snapshot.data ?? 0;
-                    return GestureDetector(
-                      onTap: () {
-                        routeTo("/book-detail", queryParameters: {"id": book.bookId.toString()});
-                      },
-                      child: Card(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Image.network(
-                                "${getEnv("API_BASE_URL")}${book.imageUrl}",
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    book.title ?? "",
-                                    style: TextStyle(fontWeight: FontWeight.bold),
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  Text(
-                                    book.author ?? "",
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                  Text(
-                                    '₩${book.price}',
-                                    style: TextStyle(color: Colors.blue),
-                                  ),
-                                  Text("comment: ${book.commentCount}"),
-                                  Text("Review: ${review}"),
-                                  SizedBox(height: 4),
-                                  ElevatedButton(
-                                    onPressed: () {
-                                      showToast(
-                                        title: "성공",
-                                        description: "장바구니에 추가되었습니다.",
-                                      );
-                                    },
-                                    child: Text('장바구니 담기'),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
