@@ -18,6 +18,7 @@ class _BooksState extends NyState<Books> {
   final _ratingApiService = RatingApiService();
   final _searchHistoryApiService = SearchHistoryApiService();
   final _searchFocusNode = FocusNode();
+  final _searchController = TextEditingController();
 
   late List<Book>? _books;
   late List<Book>? _filteredBooks;
@@ -42,6 +43,7 @@ class _BooksState extends NyState<Books> {
   @override
   void dispose() {
     _searchFocusNode.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -93,6 +95,7 @@ class _BooksState extends NyState<Books> {
     return Scaffold(
       appBar: AppBar(
         title: TextField(
+          controller: _searchController,
           focusNode: _searchFocusNode,
           onChanged: _filterBooks,
           decoration: InputDecoration(
@@ -172,8 +175,12 @@ class _BooksState extends NyState<Books> {
                   return ListTile(
                     title: Text(history.keyword ?? ''),
                     onTap: () {
+                      _searchController.text = history.keyword ?? "";
                       _filterBooks(history.keyword ?? '');
-                      
+                      setState(() {
+                        _searchQuery = history.keyword ?? "";
+                        _isSearchFocused = false;
+                      });
                     },
                   );
                 },
