@@ -173,7 +173,7 @@ class _BooksState extends NyState<Books> {
           children: [
             if (_isSearchFocused)
               Container(
-                height: 200,
+                height: (_searchHistories?.length ?? 0) * 56.0,
                 child: ListView.builder(
                   itemCount: _searchHistories?.length ?? 0,
                   itemBuilder: (context, index) {
