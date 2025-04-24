@@ -16,28 +16,28 @@ class SearchHistoryApiService extends NyApiService {
     final _profile = await _profileApiService.getProfile();
 
     return await network(
-        request: (request) => request.get("/search-history/${_profile!.id}"),
+        request: (request) => request.get("/api/search-history/${_profile!.id}"),
     );
   }
 
   Future<dynamic> create({  required String keyword }) async {
     final _profile = await _profileApiService.getProfile();
     return await network(
-      request: (request) => request.post("/search-history/${_profile!.id}?keyword=$keyword"),
+      request: (request) => request.post("/api/search-history/${_profile!.id}?keyword=$keyword"),
     );
   }
 
   Future<dynamic> destroyAll() async {
     final _profile = await _profileApiService.getProfile();
     return await network(
-      request: (request) => request.delete("/search-history/${_profile!.id}")
+      request: (request) => request.delete("/api/search-history/${_profile!.id}")
      );
   }
 
   Future<dynamic> destroy({required String keyword }) async {
     final _profile = await _profileApiService.getProfile();
     return await network(
-      request: (request) => request.delete("/search-history/${_profile!.id}/$keyword")
+      request: (request) => request.delete("/api/search-history/${_profile!.id}/$keyword")
      );
   }
 }

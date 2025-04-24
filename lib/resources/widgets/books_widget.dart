@@ -163,10 +163,23 @@ class _BooksState extends NyState<Books> {
       body: Column(
         children: [
           if (_isSearchFocused)
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: ListView(lengt),
+            Container(
+              height: 200,
+              child: ListView.builder(
+                itemCount: _searchHistories?.length ?? 0,
+                itemBuilder: (context, index) {
+                  final history = _searchHistories![index];
+                  return ListTile(
+                    title: Text(history.keyword ?? ''),
+                    onTap: () {
+                      _filterBooks(history.keyword ?? '');
+                      
+                    },
+                  );
+                },
+              ),
             ),
+
           Expanded(
             child: GridView.builder(
               padding: EdgeInsets.all(16),
