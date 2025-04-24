@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/models/book.dart';
+import 'package:flutter_app/app/models/search_history.dart';
 import 'package:flutter_app/app/networking/books_api_service.dart';
 import 'package:flutter_app/app/networking/rating_api_service.dart';
+import 'package:flutter_app/app/networking/search_history_api_service.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class Books extends StatefulWidget {
@@ -14,11 +16,35 @@ class Books extends StatefulWidget {
 class _BooksState extends NyState<Books> {
   final _booksApiService = BooksApiService();
   final _ratingApiService = RatingApiService();
+  final _searchHistoryApiService = SearchHistoryApiService();
+  final _searchFocusNode = FocusNode();
+
   late List<Book>? _books;
   late List<Book>? _filteredBooks;
+  late List<SearchHistory>? _searchHistories;
+  bool _isSearchFocused = false;
+
   String _searchQuery = '';
   String _sortCriteria = 'title';
   bool _isAscending = true; // 並び替えの方向を管理
+
+  @override
+  void initState() async {
+    super.initState();
+    _searchFocusNode.addListener(() {
+      setState(() {
+        _isSearchFocused = _searchFocusNode.hasFocus;
+      });
+    });
+
+    _searchHistories = await _searchHistoryApiService.findAll();
+  }
+
+  @override
+  void dispose() {
+    _searchFocusNode.dispose();
+    super.dispose();
+  }
 
   @override
   get init => () async {
@@ -67,6 +93,7 @@ class _BooksState extends NyState<Books> {
     return Scaffold(
       appBar: AppBar(
         title: TextField(
+          focusNode: _searchFocusNode,
           onChanged: _filterBooks,
           decoration: InputDecoration(
             hintText: '검색어를 입력하세요',
@@ -135,6 +162,17 @@ class _BooksState extends NyState<Books> {
       ),
       body: Column(
         children: [
+          if (_isSearchFocused)
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                'hello',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
           Expanded(
             child: GridView.builder(
               padding: EdgeInsets.all(16),
