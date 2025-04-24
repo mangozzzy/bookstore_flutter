@@ -1,3 +1,5 @@
+import '/app/models/search_history.dart';
+import '/app/networking/search_history_api_service.dart';
 import '/app/networking/rating_api_service.dart';
 import '/app/models/payment.dart';
 import '/app/networking/payment_api_service.dart';
@@ -102,6 +104,10 @@ final Map<Type, dynamic> modelDecoders = {
   List<Payment>: (data) => List.from(data).map((json) => Payment.fromJson(json)).toList(),
 
   Payment: (data) => Payment.fromJson(data),
+
+  List<SearchHistory>: (data) => List.from(data).map((json) => SearchHistory.fromJson(json)).toList(),
+
+  SearchHistory: (data) => SearchHistory.fromJson(data),
 };
 
 /* API Decoders
@@ -136,6 +142,8 @@ final Map<Type, dynamic> apiDecoders = {
   PaymentApiService: PaymentApiService(),
 
   RatingApiService: RatingApiService(),
+
+  SearchHistoryApiService: SearchHistoryApiService(),
 };
 
 /* Controller Decoders
