@@ -262,7 +262,20 @@ class _BooksState extends NyState<Books> {
                                       style: TextStyle(color: Colors.blue),
                                     ),
                                     Text("comment: ${book.commentCount}"),
-                                    Text("Review: ${review}"),
+                                    Row(
+                                      children: [
+                                        Row(
+                                          children: List.generate(5, (index) {
+                                            return Icon(
+                                              index < review ? Icons.star : Icons.star_border,
+                                              color: Colors.amber,
+                                              size: 16,
+                                            );
+                                          }),
+                                        ),
+                                        Text('(${review.toStringAsFixed(1)})'),
+                                      ],
+                                    ),
                                     SizedBox(height: 4),
                                     ElevatedButton(
                                       onPressed: () {
