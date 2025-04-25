@@ -247,12 +247,15 @@ class _BooksState extends NyState<Books> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      book.title ?? "",
-                                      style: TextStyle(fontWeight: FontWeight.bold),
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
+                                    Row(children: [
+                                      Text(
+                                        book.title ?? "",
+                                        style: TextStyle(fontWeight: FontWeight.bold),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      Text(" (${book.commentCount})"),
+                                    ],),
                                     Text(
                                       book.author ?? "",
                                       style: TextStyle(color: Colors.grey),
@@ -261,7 +264,6 @@ class _BooksState extends NyState<Books> {
                                       '₩${book.price}',
                                       style: TextStyle(color: Colors.blue),
                                     ),
-                                    Text("comment: ${book.commentCount}"),
                                     Row(
                                       children: [
                                         Row(
