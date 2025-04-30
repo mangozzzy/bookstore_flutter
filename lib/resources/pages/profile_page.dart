@@ -3,6 +3,7 @@ import 'package:flutter_app/app/models/comment.dart';
 import 'package:flutter_app/app/models/profile.dart';
 import 'package:flutter_app/app/networking/comment_api_service.dart';
 import 'package:flutter_app/app/networking/profile_api_service.dart';
+import 'package:flutter_app/app/networking/search_history_api_service.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class ProfilePage extends NyStatefulWidget {
@@ -30,6 +31,7 @@ class _ProfilePageState extends NyPage<ProfilePage> {
 
   final _apiService = ProfileApiService();
   final _commentApiService = CommentApiService();
+  final _searchHistoryApiService = SearchHistoryApiService();
 
   late Profile? _profile;
   late List<Comment>? _comments;
@@ -54,7 +56,6 @@ class _ProfilePageState extends NyPage<ProfilePage> {
         _phoneController.text = _profile?.phoneNumber ?? "";
         _birthController.text = _profile?.birthDate ?? "";
         _addressController.text = _profile?.address ?? "";
-        _selectedInterests.addAll(['과학', '소설']); // 초기 관심사
       };
 
   @override
@@ -260,6 +261,23 @@ class _ProfilePageState extends NyPage<ProfilePage> {
           child: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Text('내 댓글 관리'),
+          ),
+        ),
+        SizedBox(height: 8),
+        OutlinedButton(
+          onPressed: () async {
+            await _searchHistoryApiService.destroyAll();
+            showToast(
+              title: "알림",
+              description: "검색 기록이 삭제되었습니다.",
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Text('검색 기록 삭제'),
+          ),
+          style: OutlinedButton.styleFrom(
+            foregroundColor: Colors.blue,
           ),
         ),
         SizedBox(height: 8),
