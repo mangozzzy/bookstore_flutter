@@ -21,13 +21,11 @@ class _ProfilePageState extends NyPage<ProfilePage> {
   String _selectedGender = '남성';
   final List<String> _selectedInterests = [];
   final List<String> _availableInterests = [
-    '과학',
-    '소설',
-    '인문',
-    '에세이',
-    '역사',
-    '예술',
-    '경제'
+    '동화',
+    '고전',
+    '전후소설',
+    '풍자',
+    '디스토피아'
   ];
 
   final _apiService = ProfileApiService();
