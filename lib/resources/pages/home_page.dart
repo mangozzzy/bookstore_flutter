@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/resources/widgets/books_widget.dart';
+import 'package:flutter_app/resources/widgets/detailed_search_widget.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 import 'profile_page.dart';
@@ -20,6 +21,7 @@ class _HomePageState extends NyPage<HomePage> {
         index: _selectedIndex,
         children: [
           Books(),
+          DetailedSearch(),
           ProfilePage(),    // 프로필 페이지
         ],
       ),
@@ -34,6 +36,10 @@ class _HomePageState extends NyPage<HomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.book),
             label: '도서몰',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: '고급검색',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
