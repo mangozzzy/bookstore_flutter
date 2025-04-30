@@ -95,17 +95,30 @@ class _DetailedSearchState extends NyState<DetailedSearch> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text('장르', style: TextStyle(fontSize: 16)),
-                    ..._genres.map((genre) => RadioListTile<String>(
-                      title: Text(genre),
-                      value: genre,
-                      groupValue: _selectedGenre,
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedGenre = value!;
-                        });
-                        _filterBooks();
-                      },
-                    )).toList(),
+                    SizedBox(height: 8),
+                    Wrap(
+                      spacing: 8.0,
+                      runSpacing: 8.0,
+                      children: _genres.map((genre) => ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            _selectedGenre = genre;
+                          });
+                          _filterBooks();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: _selectedGenre == genre ? Colors.blue : Colors.grey[200],
+                          foregroundColor: _selectedGenre == genre ? Colors.white : Colors.black,
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                          minimumSize: const Size(0, 32),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                        child: Text(
+                          genre,
+                          style: const TextStyle(fontSize: 12),
+                        ),
+                      )).toList(),
+                    ),
                   ],
                 ),
               ],
