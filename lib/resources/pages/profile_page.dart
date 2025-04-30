@@ -356,7 +356,7 @@ class _ProfilePageState extends NyPage<ProfilePage> {
                   subtitle: Text('게시글: 제목 ${_comment?.book?.title}'),
                   trailing: Icon(Icons.arrow_forward_ios, size: 16),
                   onTap: () {
-                    // 해당 댓글이 있는 게시글로 이동
+                    routeTo('/book-detail', queryParameters: {'id': _comment?.book?.bookId.toString()});
                   },
                 );
               },
