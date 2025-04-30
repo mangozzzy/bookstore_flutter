@@ -14,17 +14,23 @@ class HomePage extends NyStatefulWidget {
 class _HomePageState extends NyPage<HomePage> {
   int _selectedIndex = 0;
 
+  Widget _getBody() {
+    switch (_selectedIndex) {
+      case 0:
+        return Books();
+      case 1:
+        return DetailedSearch();
+      case 2:
+        return ProfilePage();
+      default:
+        return Books();
+    }
+  }
+
   @override
   Widget view(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: [
-          Books(),
-          DetailedSearch(),
-          ProfilePage(),    // 프로필 페이지
-        ],
-      ),
+      body: _getBody(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: (index) {
