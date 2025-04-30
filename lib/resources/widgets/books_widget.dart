@@ -29,6 +29,15 @@ class _BooksState extends NyState<Books> {
   String _sortCriteria = 'title';
   bool _isAscending = true; // 並び替えの方向を管理
 
+  final List<String> _genres = [
+    '동화',
+    '고전',
+    '전후소설',
+    '풍자',
+    '디스토피아'
+  ];
+  Set<String> _selectedGenres = {};
+
   @override
   void initState() {
     super.initState();
@@ -87,6 +96,29 @@ class _BooksState extends NyState<Books> {
         }
         return _isAscending ? comparison : -comparison; // 昇順または降順を適用
       });
+    });
+  }
+
+  void _filterByGenres() {
+    setState(() {
+      if (_selectedGenres.isEmpty) {
+        _filteredBooks = _books;
+      } else {
+        _filteredBooks = _books?.where((book) {
+          return _selectedGenres.any((genre) => book.genre?.contains(genre) ?? false);
+        }).toList();
+      }
+    });
+  }
+
+  void _toggleGenre(String genre) {
+    setState(() {
+      if (_selectedGenres.contains(genre)) {
+        _selectedGenres.remove(genre);
+      } else {
+        _selectedGenres.add(genre);
+      }
+      _filterByGenres();
     });
   }
 
@@ -210,7 +242,24 @@ class _BooksState extends NyState<Books> {
                   },
                 ),
               ),
-
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: Row(
+                children: _genres.map((genre) {
+                  return Padding(
+                    padding: const EdgeInsets.only(right: 8.0),
+                    child: FilterChip(
+                      label: Text(genre),
+                      selected: _selectedGenres.contains(genre),
+                      onSelected: (bool selected) {
+                        _toggleGenre(genre);
+                      },
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
             Expanded(
               child: GridView.builder(
                 padding: EdgeInsets.all(16),
