@@ -40,11 +40,11 @@ class _DetailedSearchState extends NyState<DetailedSearch> {
 
     _filteredBooks = _books!.where((book) {
       final titleMatch = _titleController.text.isEmpty || 
-          (book.title?.toLowerCase() == _titleController.text.toLowerCase());
+          (book.title?.toLowerCase().contains(_titleController.text.toLowerCase()) ?? false);
       final authorMatch = _authorController.text.isEmpty || 
-          (book.author?.toLowerCase() == _authorController.text.toLowerCase());
+          (book.author?.toLowerCase().contains(_authorController.text.toLowerCase()) ?? false);
       final publisherMatch = _publisherController.text.isEmpty || 
-          (book.publisher?.toLowerCase() == _publisherController.text.toLowerCase());
+          (book.publisher?.toLowerCase().contains(_publisherController.text.toLowerCase()) ?? false);
       final genreMatch = book.genre == _selectedGenre;
 
       return titleMatch && authorMatch && publisherMatch && genreMatch;
