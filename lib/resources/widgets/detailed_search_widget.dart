@@ -130,6 +130,9 @@ class _DetailedSearchState extends NyState<DetailedSearch> {
                               )
                             : const Icon(Icons.book),
                         trailing: Text('¥${book.price ?? 0}'),
+                        onTap: () {
+                          routeTo('/book-detail', queryParameters: { "id": book.bookId.toString() });
+                        },
                       );
                     },
                   ),
