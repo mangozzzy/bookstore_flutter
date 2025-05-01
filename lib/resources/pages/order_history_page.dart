@@ -48,14 +48,13 @@ class _OrderHistoryPageState extends NyState<OrderHistoryPage> {
   @override
   Widget view(BuildContext context) {
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: Scaffold(
         appBar: AppBar(
           title: Text('구매내역 관리'),
           centerTitle: true,
           bottom: TabBar(
             tabs: [
-              Tab(text: '전체'),
               Tab(text: '주문완료'),
               Tab(text: '환불/교환'),
             ],
@@ -124,7 +123,6 @@ class _OrderHistoryPageState extends NyState<OrderHistoryPage> {
               },
             ),
             Container(), // 주문완료 탭
-            Container(), // 환불/교환 탭
           ],
         ),
       ),
