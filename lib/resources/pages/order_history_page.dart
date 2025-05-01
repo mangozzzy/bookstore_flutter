@@ -70,7 +70,7 @@ class _OrderHistoryPageState extends NyState<OrderHistoryPage> {
       case 'exchange_requested':
         return '교환요청';
       default:
-        return status;
+        return "주문완료";
     }
   }
 
