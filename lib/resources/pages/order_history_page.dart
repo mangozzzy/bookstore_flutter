@@ -116,6 +116,8 @@ class _OrderHistoryPageState extends NyState<OrderHistoryPage> {
                                 style: TextStyle(fontSize: 14),
                               ),
                             )),
+                        ElevatedButton(onPressed: (){}, child: Text("환불")),
+                        ElevatedButton(onPressed: (){}, child: Text("교환")),
                       ],
                     ),
                   ),
