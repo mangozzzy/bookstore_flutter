@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/app/models/book.dart';
 import 'package:flutter_app/app/models/search_history.dart';
 import 'package:flutter_app/app/networking/books_api_service.dart';
+import 'package:flutter_app/app/networking/cart_api_service.dart';
 import 'package:flutter_app/app/networking/rating_api_service.dart';
 import 'package:flutter_app/app/networking/search_history_api_service.dart';
 import 'package:nylo_framework/nylo_framework.dart';
@@ -16,6 +17,7 @@ class Books extends StatefulWidget {
 class _BooksState extends NyState<Books> {
   final _booksApiService = BooksApiService();
   final _ratingApiService = RatingApiService();
+  final _cartApiService = CartApiService();
   final _searchHistoryApiService = SearchHistoryApiService();
   final _searchFocusNode = FocusNode();
   final _searchController = TextEditingController();
@@ -329,11 +331,12 @@ class _BooksState extends NyState<Books> {
                                     ),
                                     SizedBox(height: 4),
                                     ElevatedButton(
-                                      onPressed: () {
+                                      onPressed: () async {
                                         showToast(
                                           title: "성공",
                                           description: "장바구니에 추가되었습니다.",
                                         );
+                                        await _cartApiService.add( bookId: book.bookId, quantity: 1);
                                       },
                                       child: Text('장바구니 담기'),
                                     ),
