@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/app/models/profile.dart';
 import 'package:flutter_app/app/networking/payment_api_service.dart';
+import 'package:flutter_app/app/networking/profile_api_service.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class PurchasePage extends NyStatefulWidget {
@@ -13,10 +15,19 @@ class _PurchasePageState extends NyState<PurchasePage> {
   final List<String> _paymentMethods = ['신한', '농협', '삼성'];
   String? _selectedCoupon;
   final List<String> _availableCoupons = ['신규 가입 10% 할인', '도서 특별 20% 할인'];
+  late Profile? _profile;
 
   final _paymentApiService = PaymentApiService();
-  final _addressController = TextEditingController(text: "서울시 성북구");
+  final _profileApiService = ProfileApiService();
+  final _addressController = TextEditingController(text: "");
   final _formKey = GlobalKey<FormState>();
+
+
+  @override
+  get init => () async {
+    _profile = await _profileApiService.getProfile();
+    _addressController.text = _profile?.address ?? "";
+  };
 
   @override
   Widget view(BuildContext context) {

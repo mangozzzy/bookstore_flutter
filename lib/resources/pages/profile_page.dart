@@ -3,6 +3,7 @@ import 'package:flutter_app/app/models/comment.dart';
 import 'package:flutter_app/app/models/profile.dart';
 import 'package:flutter_app/app/networking/comment_api_service.dart';
 import 'package:flutter_app/app/networking/profile_api_service.dart';
+import 'package:flutter_app/app/networking/search_history_api_service.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class ProfilePage extends NyStatefulWidget {
@@ -21,17 +22,16 @@ class _ProfilePageState extends NyPage<ProfilePage> {
   String _selectedGender = '남성';
   final List<String> _selectedInterests = [];
   final List<String> _availableInterests = [
-    '과학',
-    '소설',
-    '인문',
-    '에세이',
-    '역사',
-    '예술',
-    '경제'
+    '동화',
+    '고전',
+    '전후소설',
+    '풍자',
+    '디스토피아'
   ];
 
   final _apiService = ProfileApiService();
   final _commentApiService = CommentApiService();
+  final _searchHistoryApiService = SearchHistoryApiService();
 
   late Profile? _profile;
   late List<Comment>? _comments;
@@ -56,7 +56,6 @@ class _ProfilePageState extends NyPage<ProfilePage> {
         _phoneController.text = _profile?.phoneNumber ?? "";
         _birthController.text = _profile?.birthDate ?? "";
         _addressController.text = _profile?.address ?? "";
-        _selectedInterests.addAll(['과학', '소설']); // 초기 관심사
       };
 
   @override
@@ -266,6 +265,23 @@ class _ProfilePageState extends NyPage<ProfilePage> {
         ),
         SizedBox(height: 8),
         OutlinedButton(
+          onPressed: () async {
+            await _searchHistoryApiService.destroyAll();
+            showToast(
+              title: "알림",
+              description: "검색 기록이 삭제되었습니다.",
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Text('검색 기록 삭제'),
+          ),
+          style: OutlinedButton.styleFrom(
+            foregroundColor: Colors.blue,
+          ),
+        ),
+        SizedBox(height: 8),
+        OutlinedButton(
           onPressed: () {
             // 로그아웃 로직
             routeTo('/login');
@@ -356,7 +372,7 @@ class _ProfilePageState extends NyPage<ProfilePage> {
                   subtitle: Text('게시글: 제목 ${_comment?.book?.title}'),
                   trailing: Icon(Icons.arrow_forward_ios, size: 16),
                   onTap: () {
-                    // 해당 댓글이 있는 게시글로 이동
+                    routeTo('/book-detail', queryParameters: {'id': _comment?.book?.bookId.toString()});
                   },
                 );
               },

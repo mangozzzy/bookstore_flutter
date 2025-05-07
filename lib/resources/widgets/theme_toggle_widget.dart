@@ -32,9 +32,8 @@ class ThemeToggle extends StatelessWidget {
             value: isThemeDark,
             onChanged: (_) {
               NyTheme.set(context,
-                  id: getEnv(isThemeDark != true
-                      ? 'DARK_THEME_ID'
-                      : 'LIGHT_THEME_ID'));
+                id: getEnv('LIGHT_THEME_ID'),
+              );
             }),
         Text("${isThemeDark ? "Dark" : "Light"} Mode"),
       ],
