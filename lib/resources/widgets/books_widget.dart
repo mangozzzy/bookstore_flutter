@@ -179,29 +179,6 @@ class _BooksState extends NyState<Books> {
                   Navigator.pushNamed(context, '/cart');
                 },
               ),
-              Positioned(
-                right: 8,
-                top: 8,
-                child: Container(
-                  padding: EdgeInsets.all(2),
-                  decoration: BoxDecoration(
-                    color: Colors.red,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  constraints: BoxConstraints(
-                    minWidth: 16,
-                    minHeight: 16,
-                  ),
-                  child: Text(
-                    '0',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 10,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ),
             ],
           ),
         ],
