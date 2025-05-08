@@ -41,7 +41,7 @@ class Main extends StatelessWidget {
                 checkerboardOffscreenLayers: false,
                 showSemanticsDebugger: false,
                 debugShowCheckedModeBanner: false,
-                darkTheme: appThemes.darkTheme,
+                // darkTheme: appThemes.darkTheme,
                 initialRoute: initialRoute,
                 onGenerateRoute: onGenerateRoute,
                 onUnknownRoute: onUnknownRoute,
