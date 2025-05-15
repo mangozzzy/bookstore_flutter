@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/models/book.dart';
+import 'package:flutter_app/app/models/profile.dart';
 import 'package:flutter_app/app/models/search_history.dart';
 import 'package:flutter_app/app/networking/books_api_service.dart';
 import 'package:flutter_app/app/networking/cart_api_service.dart';
+import 'package:flutter_app/app/networking/profile_api_service.dart';
 import 'package:flutter_app/app/networking/rating_api_service.dart';
 import 'package:flutter_app/app/networking/search_history_api_service.dart';
 import 'package:nylo_framework/nylo_framework.dart';
@@ -21,10 +23,12 @@ class _BooksState extends NyState<Books> {
   final _searchHistoryApiService = SearchHistoryApiService();
   final _searchFocusNode = FocusNode();
   final _searchController = TextEditingController();
+  final _profileApiSerivce = ProfileApiService();
 
   late List<Book>? _books;
   late List<Book>? _filteredBooks;
   late List<SearchHistory>? _searchHistories;
+  late Profile? _profile;
   bool _isSearchFocused = false;
 
   String _searchQuery = '';
@@ -62,6 +66,10 @@ class _BooksState extends NyState<Books> {
   get init => () async {
     _books = await _booksApiService.findAll();
     _filteredBooks = _books;
+    _profile = await _profileApiSerivce.getProfile();
+    if (_profile == null) {
+      return routeTo('/login');
+    }
     _searchHistories = await _searchHistoryApiService.findAll();
   };
 
