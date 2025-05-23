@@ -101,6 +101,12 @@ class _BookDetailPageState extends NyPage<BookDetailPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Image.network(
+                      "http://localhost:8080${_book?.imageUrl}",
+                      width: 120,
+                      height: 180,
+                      fit: BoxFit.cover,
+                    ),
                     Text(
                       _book?.title ?? "",
                       style: TextStyle(
