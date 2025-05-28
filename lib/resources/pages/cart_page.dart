@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/app/models/cart.dart';
 import 'package:flutter_app/app/networking/cart_api_service.dart';
+import 'package:flutter_app/app/networking/orders_api_service.dart';
 import 'package:nylo_framework/nylo_framework.dart';
 
 class CartPage extends NyStatefulWidget {
@@ -13,6 +14,7 @@ class _CartPageState extends NyPage<CartPage> {
   late Cart? _cart;
 
   final _cartApiService = CartApiService();
+  final _ordersApiService = OrdersApiService();
 
   @override
   get init => () async {
@@ -88,9 +90,16 @@ class _CartPageState extends NyPage<CartPage> {
                     ),
                     SizedBox(height: 16),
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
+                        final order = await _ordersApiService.create(data: {
+                          "items": _cart!.items.map((item) => {
+                            "bookId": item.book.bookId,
+                            "quantity": item.quantity
+                          }).toList()
+                        });
+
                         routeTo('/purchase', queryParameters: {
-                          "orderId": "1",
+                          "orderId": order?.id.toString() ?? "",
                         });
                       },
                       style: ElevatedButton.styleFrom(
