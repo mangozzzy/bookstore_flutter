@@ -89,20 +89,13 @@ class _BookDetailPageState extends NyPage<BookDetailPage> {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Uncomment and use the image if needed
-              // Image.network(
-              //   "http://localhost:8080${_book?.imageUrl}",
-              //   width: 120,
-              //   height: 180,
-              //   fit: BoxFit.cover,
-              // ),
               SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Image.network(
-                      "http://localhost:8080${_book?.imageUrl}",
+                      "${getEnv("API_BASE_URL")}${_book?.imageUrl}",
                       width: 120,
                       height: 180,
                       fit: BoxFit.cover,
@@ -131,27 +124,30 @@ class _BookDetailPageState extends NyPage<BookDetailPage> {
             ],
           ),
           SizedBox(height: 16),
-          Text(
-            '책 소개',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
           Gap(10),
-          NyTextField(
-            controller: _commentController,
-            decoration: InputDecoration(hintText: " 댓글을 달아주세요"),
-            validationRules: "not_empty",
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              await _booksController.handleLogin(
-                bookId: _book!.bookId,
-                content: _commentController.text,
-              );
-              _commentController.text = "";
+          Row(
+            children: [
+              Expanded(
+                child: NyTextField(
+                  controller: _commentController,
+                  decoration: InputDecoration(hintText: " 댓글을 달아주세요"),
+                  validationRules: "not_empty",
+                ),
+              ),
+              SizedBox(width: 8),
+              ElevatedButton(
+                onPressed: () async {
+                  await _booksController.handleLogin(
+                    bookId: _book!.bookId,
+                    content: _commentController.text,
+                  );
+                  _commentController.text = "";
 
-              reboot();
-            },
-            child: Text("댓글 달기"),
+                  reboot();
+                },
+                child: Text("댓글 달기"),
+              ),
+            ],
           ),
           SizedBox(height: 16),
           Text(
@@ -179,24 +175,34 @@ class _BookDetailPageState extends NyPage<BookDetailPage> {
               );
             }),
           ),
-          ElevatedButton(
-            onPressed: () async {
-              await _cartApiService.add(bookId: _book!.bookId, quantity: 1);
-            },
-            child: Text("장바구니 담기"),
-          ),
-          ElevatedButton(
-            onPressed: () async {
-              final order = await _ordersApiService.create(data: {
-                "items": [
-                  {"bookId": _book!.bookId, "quantity": 1}
-                ]
-              });
-              routeTo('/purchase', queryParameters: {
-                "orderId": order?.id.toString(),
-              });
-            },
-            child: Text("구매하기"),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    await _cartApiService.add(bookId: _book!.bookId, quantity: 1);
+                  },
+                  child: Text("장바구니 담기"),
+                ),
+              ),
+              SizedBox(width: 16),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    final order = await _ordersApiService.create(data: {
+                      "items": [
+                        {"bookId": _book!.bookId, "quantity": 1}
+                      ]
+                    });
+                    routeTo('/purchase', queryParameters: {
+                      "orderId": order?.id.toString(),
+                    });
+                  },
+                  child: Text("구매하기"),
+                ),
+              ),
+            ],
           ),
           Gap(20),
         ],
