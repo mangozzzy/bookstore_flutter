@@ -39,24 +39,6 @@ class _OrderHistoryPageState extends NyState<OrderHistoryPage> {
     });
   }
 
-  void _handleExchange(Order order) {
-    setState(() {
-      orders.remove(order);
-      final updatedOrder = Order(
-        id: order.id,
-        orderItems: order.orderItems,
-        payment: order.payment,
-        delivery: order.delivery,
-        orderDate: order.orderDate,
-        status: 'exchange_requested',
-        totalAmount: order.totalAmount,
-        discountedAmount: order.discountedAmount,
-        address: order.address,
-      );
-      refundOrders.add(updatedOrder);
-    });
-  }
-
   String _getStatusText(String status) {
     switch (status.toLowerCase()) {
       case 'completed':
@@ -155,10 +137,6 @@ class _OrderHistoryPageState extends NyState<OrderHistoryPage> {
                         child: Text("환불"),
                       ),
                       SizedBox(width: 8),
-                      ElevatedButton(
-                        onPressed: () => _handleExchange(order),
-                        child: Text("교환"),
-                      ),
                     ],
                   ),
                 ],
@@ -181,7 +159,7 @@ class _OrderHistoryPageState extends NyState<OrderHistoryPage> {
           bottom: TabBar(
             tabs: [
               Tab(text: '주문완료'),
-              Tab(text: '환불/교환'),
+              Tab(text: '환불요청'),
             ],
           ),
         ),
