@@ -11,6 +11,8 @@ class User extends Model {
   final String? birthDate;
   final String? gender;
   final String? age;
+  final String? cardType;
+  final String? cardNumber;
 
   static StorageKey key = "register";
   
@@ -25,6 +27,8 @@ class User extends Model {
     required this.birthDate,
     required this.gender,
     required this.age,
+    this.cardType,
+    this.cardNumber,
   }) : super(key: key);
   
   factory User.fromJson(data) {
@@ -39,6 +43,8 @@ class User extends Model {
       birthDate: data['birthDate'],
       gender: data['gender'],
       age: data['age'],
+      cardType: data['cardType'],
+      cardNumber: data['cardNumber'],
     );
   }
 
