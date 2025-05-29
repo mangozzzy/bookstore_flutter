@@ -10,7 +10,7 @@ class User extends Model {
   final String? address;
   final String? birthDate;
   final String? gender;
-  final String? age;
+  final int? age;
   final String? cardType;
   final String? cardNumber;
 
@@ -42,7 +42,7 @@ class User extends Model {
       address: data['address'],
       birthDate: data['birthDate'],
       gender: data['gender'],
-      age: data['age'],
+      age: int.tryParse(data['age'].toString()),
       cardType: data['cardType'],
       cardNumber: data['cardNumber'],
     );

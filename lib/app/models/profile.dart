@@ -44,7 +44,7 @@ class Profile extends Model {
       address: data['address'],
       birthDate: data['birthDate'],
       gender: data['gender'],
-      age: data['age'] != null ? int.tryParse(data['age'].toString()) : null,
+      age: int.tryParse(data['age'].toString()),
       cardNumber: data['cardNumber'],
       cardType: data['cardType'],
       bankAccount: data['bankAccount'],
